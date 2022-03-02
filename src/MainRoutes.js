@@ -73,12 +73,13 @@ const MainRoutes = () => {
         <>
             <Routes>
                 {PUBLIC_ROUTES.map((item) => (
-                    <Route path={item.link} element={item.element} />
+                    <Route key={item.id} path={item.link} element={item.element} />
             ))}
 
             {/*user ?*/
                 PRIVATE_ROUTES.map((item) => (
                     <Route
+                        key={item.id}
                         path={item.link}
                         element={
                         // user.email === ADMIN ? (
