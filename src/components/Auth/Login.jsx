@@ -56,7 +56,6 @@ export default function Login() {
     navigate('/')
   }
 
-  console.log(hasAccount);
 
   // const signUp = () => {
   //   handleSignUp()
