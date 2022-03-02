@@ -3,7 +3,7 @@ import React from 'react';
 const ProductsPage = () => {
     return (
         <div>
-            Products
+            <h1 style={{textAlign: 'center'}}>Products</h1>
         </div>
     );
 };

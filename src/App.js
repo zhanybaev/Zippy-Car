@@ -1,4 +1,5 @@
 import { BrowserRouter } from "react-router-dom";
+import Sidebar from "./components/Sidebar/Sidebar";
 import AuthContextProvider from './contexts/AuthContext'
 import MainRoutes from "./MainRoutes";
 
@@ -7,6 +8,7 @@ function App() {
     <>
       <AuthContextProvider>
         <BrowserRouter>
+          <Sidebar/>
           <MainRoutes />
         </BrowserRouter>
       </AuthContextProvider>

@@ -5,7 +5,7 @@ const HomePage = () => {
     const { user: {email} } = useAuth()
     return (
         <div>
-            Home
+            <h1 style={{textAlign:'center'}}>Home</h1>
         </div>
     );
 };

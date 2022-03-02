@@ -3,7 +3,7 @@ import React from 'react';
 const AdminPage = () => {
     return (
         <div>
-            Admin
+            <h1 style={{textAlign: 'center'}}>Admin</h1>
         </div>
     );
 };

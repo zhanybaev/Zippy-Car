@@ -3,7 +3,7 @@ import React from 'react';
 const CartPage = () => {
     return (
         <div>
-            Cart
+           <h1 style={{textAlign: 'center'}}>Cart</h1>
         </div>
     );
 };
