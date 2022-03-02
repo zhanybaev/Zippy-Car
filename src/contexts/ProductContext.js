@@ -56,10 +56,17 @@ const ProductContextProvider = ({ children }) => {
         getProducts();
     };
 
+    const deleteProduct = async (id)=>{
+        const userDoc = doc(db, "cars", id)
+        await deleteDoc(userDoc)
+        getProducts()
+    }
+
   
     const values = {
         getProducts,
         addProduct,
+        deleteProduct,
         products: state.products 
     };
     return (
