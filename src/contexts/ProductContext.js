@@ -3,7 +3,7 @@ import { createContext, useContext, useReducer } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ACTIONS, JSON_API_PRODUCTS } from '../helpers/consts';
 import { calcSubPrice, calcTotalPrice, getCountProductsInCart } from '../helpers/functions'
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, limit, where, isGreaterThanOrEqualTo, orderBy, startAt, endAt } from 'firebase/firestore'
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, startAt, endAt } from 'firebase/firestore'
 import { db } from '../fire'
 
 export const productContext = createContext();
@@ -62,12 +62,32 @@ const ProductContextProvider = ({ children }) => {
         getProducts()
     }
 
+    const getProductDetails = async (id) => {
+        const q = collection(db, `cars`)
+        const data = await getDocs(q)
+        dispatch({
+          type: ACTIONS.GET_PRODUCT_DETAILS,
+          payload: data.docs.map((doc)=> {
+            return({...doc.data(), id: id});
+        }),
+        });
+    };
+
+    const saveEditedProduct = async (productToEdit) => {
+        const userDoc = doc(db, "cars", productToEdit.id)
+        await updateDoc(userDoc, productToEdit)
+        getProducts()
+    }
+
   
     const values = {
         getProducts,
         addProduct,
         deleteProduct,
-        products: state.products 
+        saveEditedProduct,
+        getProductDetails,
+        products: state.products,
+        productDetails: state.productDetails
     };
     return (
       <productContext.Provider value={values}>{children}</productContext.Provider>

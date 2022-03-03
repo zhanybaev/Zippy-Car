@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 const HomePage = () => {
     const { user: {email} } = useAuth()
     return (
-        <div className="home">
+        <div className='home' >
             <h1 style={{textAlign:'center'}}>Home</h1>
         </div>
     );

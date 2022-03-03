@@ -5,13 +5,13 @@ body {
 }
 
 .home {
-  min-height: 700px;
+  min-height: 500px;
   margin-top: 0px;
   width: 100%;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-image: url('https://i.pinimg.com/originals/0c/9d/0d/0c9d0de4a11b4ebf167f90d1ab2c2237.gif');
+  background-image: url('https://images.pexels.com/photos/261985/pexels-photo-261985.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
 }
 
 .home h1{
