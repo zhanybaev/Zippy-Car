@@ -5,14 +5,13 @@ import { useProducts } from '../../contexts/ProductContext';
 
 const EditProduct = () => {
     const { id } = useParams();
-
     const navigate = useNavigate();
-    const { getProductDetails, productDetails, saveEditedProduct } = useProducts();
-    const [ data ] = productDetails
+    const { getProductDetails, productDetails, saveEditedProduct , edit} = useProducts();
+    console.log(edit);
+    const [product, setProduct] = useState(productDetails);
 
-    const [product, setProduct] = useState(data);
 
-    const handleInput = (e, product, setProduct) => {
+    const handleInput = (e) => {
         let obj = {
             ...product,
             [e.target.name]: e.target.value,
@@ -22,11 +21,14 @@ const EditProduct = () => {
 
     useEffect(() => {
         getProductDetails(id);
-    }, []);
+    }, [id ]);
 
     useEffect(() => {
-    setProduct(data);
-    }, [data]);
+      if(edit){
+        setProduct(edit);
+      }
+    }, [edit]);
+    
 
     return (
     <div>

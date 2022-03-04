@@ -1,9 +1,8 @@
-import axios from 'axios'
 import { createContext, useContext, useReducer } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ACTIONS, JSON_API_PRODUCTS } from '../helpers/consts';
+import { ACTIONS  } from '../helpers/consts';
 import { calcSubPrice, calcTotalPrice, getCountProductsInCart } from '../helpers/functions'
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, startAt, endAt } from 'firebase/firestore'
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, startAt, endAt, getDoc } from 'firebase/firestore'
 import { db } from '../fire'
 
 export const productContext = createContext();
@@ -15,10 +14,10 @@ export const useProducts = () => {
 const INIT_STATE = {
     products: [],
     productDetails: {},
-    // cart: JSON.parse(localStorage.getItem('cart')),
-    // cartLength: getCountProductsInCart()
+    edit: {},
+    cart: JSON.parse(localStorage.getItem('cart')),
+    cartLength: getCountProductsInCart()
 };
-
 const reducer = (state = INIT_STATE, action) => {
     switch (action.type) {
         case ACTIONS.GET_PRODUCTS:
@@ -29,6 +28,8 @@ const reducer = (state = INIT_STATE, action) => {
           return {...state, cart: action.payload}
         case ACTIONS.CHANGE_CART_LENGTH:
           return {...state, cartLength: action.payload}
+          case ACTIONS.EDIT_CAR:
+          return {...state, edit: action.payload}
         default:
             return state
     }
@@ -38,7 +39,6 @@ const ProductContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, INIT_STATE);
     const usersCollectionRef = collection(db, "cars")
     
-  
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -47,7 +47,7 @@ const ProductContextProvider = ({ children }) => {
         const data = await getDocs(q)
         dispatch({
             type: ACTIONS.GET_PRODUCTS,
-            payload: data.docs.map((doc)=> ({...doc.data(), id: doc.id}))
+            payload: data.docs.map((doc)=> (doc))
         })
     }
 
@@ -63,13 +63,11 @@ const ProductContextProvider = ({ children }) => {
     }
 
     const getProductDetails = async (id) => {
-        const q = collection(db, `cars`)
-        const data = await getDocs(q)
+        const q = doc(db, "cars", id)
+        const data = await getDoc(q)
         dispatch({
-          type: ACTIONS.GET_PRODUCT_DETAILS,
-          payload: data.docs.map((doc)=> {
-            return({...doc.data(), id: id});
-        }),
+          type: ACTIONS.EDIT_CAR,
+          payload: data.data()
         });
     };
 
@@ -79,6 +77,105 @@ const ProductContextProvider = ({ children }) => {
         getProducts()
     }
 
+    const getCart = () => {
+        let cart = JSON.parse(localStorage.getItem('cart'))
+    
+        if(!cart){
+          localStorage.setItem('cart', JSON.stringify({
+            products: [],
+            totalPrice: 0
+          }))
+    
+          cart = {
+            products: [],
+            totalPrice: 0
+          }
+        }
+    
+        dispatch({
+          type: ACTIONS.GET_CART,
+          payload: cart
+        })
+    
+    }
+
+    const addProductToCart = (product) => {
+        let cart = JSON.parse(localStorage.getItem('cart'))
+    
+        if(!cart){
+          cart = {
+            product:[],
+            totalPrice: 0 
+          }
+        }
+    
+        let newProduct = {
+          item: product,
+          count: 1,
+          subPrice: +product.price
+        }
+    
+        let productToFind = cart.products.filter(item=>item.item.id===product.id)
+    
+        if(productToFind.length == 0){
+          cart.products.push(newProduct)
+        }else{
+          cart.products = cart.products.filter(item=>item.id!==product.id)
+        }
+    
+    
+        cart.totalPrice = calcTotalPrice(cart.products);
+    
+        localStorage.setItem('cart', JSON.stringify(cart))
+        dispatch({
+          type: ACTIONS.GET_CART,
+          payload: cart
+        })
+    }
+
+    const changeProductCount = (count, id) => {
+        let cart = JSON.parse(localStorage.getItem('cart'))
+    
+        cart.products = cart.products.map((product)=>{
+          if(product.item.id === id){
+            product.count = count;
+            product.subPrice = calcSubPrice(product)
+          }
+          return product
+        })
+    
+        cart.totalPrice  = calcTotalPrice(cart.products)
+        localStorage.setItem('cart', JSON.stringify(cart))
+    }
+
+    function deleteCartProducts(id){
+        let cart = JSON.parse(localStorage.getItem('cart'))
+        cart.products = cart.products.filter((item)=> item.item.id !== id)
+        cart.totalPrice = calcTotalPrice(cart.products);
+        localStorage.setItem('cart', JSON.stringify(cart))
+        getCart()
+    
+        dispatch({
+          type: ACTIONS.CHANGE_CART_LENGTH,
+          payload: cart.products.length
+        })
+    }
+    
+    function checkProductInCart(id){
+        let cart = JSON.parse(localStorage.getItem('cart'))
+    
+        if(cart){
+          let newCart = cart.products.filter((element)=>element.item.id===id)
+    
+          return newCart.length > 0 
+        }else{
+          cart={
+            product: [],
+            totalPrice: 0
+          }
+        }
+    }
+
   
     const values = {
         getProducts,
@@ -86,8 +183,18 @@ const ProductContextProvider = ({ children }) => {
         deleteProduct,
         saveEditedProduct,
         getProductDetails,
+        edit: state.edit,
+        
+        getCart,
+        addProductToCart,
+        changeProductCount,
+        deleteCartProducts,
+        checkProductInCart,
+
         products: state.products,
-        productDetails: state.productDetails
+        productDetails: state.productDetails,
+        cart: state.cart,
+        cartLength: state.cartLength
     };
     return (
       <productContext.Provider value={values}>{children}</productContext.Provider>

@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .home {
@@ -34,4 +35,12 @@ body {
   width: 90%;
   margin-top: 10px;
   border-radius: 10px;
+}
+
+.cart-table{
+  margin-left: 55px;
+}
+
+.cart-buy-button{
+  margin-left: 10vw !important;
 }

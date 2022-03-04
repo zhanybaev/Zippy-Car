@@ -1,15 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useProducts } from '../../contexts/ProductContext';
 import ProductCard from './ProductCard';
 
 const ProductList = () => {
-    const { getProducts, products } = useProducts()
+    const [search, setSearch] = useState('')
+    const { getProducts, products } = useProducts() 
+    console.log(products, 'list');
     useEffect(()=>{
-        getProducts()
-    }, [])
-    console.log(products);
+        getProducts(search)
+    }, [search])
     return (
         <div className='list'>
+            <div>
+            <input type="text" placeholder='Search' value={search} onChange={(e)=>setSearch(e.target.value)} id="Search Input" />
+            </div>
+
             {
                 products && products.length ? 
                     (products.map(item=>(
