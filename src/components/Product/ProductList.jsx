@@ -5,7 +5,6 @@ import ProductCard from './ProductCard';
 const ProductList = () => {
     const [search, setSearch] = useState('')
     const { getProducts, products } = useProducts() 
-    console.log(products, 'list');
     useEffect(()=>{
         getProducts(search)
     }, [search])

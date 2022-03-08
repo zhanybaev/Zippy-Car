@@ -5,8 +5,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 
 const ProductCard = ({ item }) => {
-    console.log(item, "item");
-    const { deleteProduct, addProductToCart, checkProductInCart } = useProducts()
+    const { deleteProduct, addProductToCart, checkProductInCart, deleteCartProducts } = useProducts()
     const navigate = useNavigate()
     return (
         <div className='card'>
@@ -15,7 +14,9 @@ const ProductCard = ({ item }) => {
             <p>{item.data().price / 1000}K $</p>
             <button onClick={()=>deleteProduct(item.id)}>Delete</button>
             <button onClick={() => navigate(`/edit/${item.id}`)} >Edit</button>
-            <button onClick={() => addProductToCart(item)}> <ShoppingCartIcon  color={checkProductInCart(item.id) ? "secondary" : ""}/> </button>
+            <button onClick={() => addProductToCart(item.data())}>
+                <ShoppingCartIcon color={checkProductInCart(item.id) ? "error" : ""}/> 
+            </button>
         </div>
     );
 };

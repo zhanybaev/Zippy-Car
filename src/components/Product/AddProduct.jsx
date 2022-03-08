@@ -5,35 +5,35 @@ import { useProducts } from '../../contexts/ProductContext';
 
 
 const AddProduct = () => {
-    const { addProduct } = useProducts();
-    const navigate = useNavigate();
-    const [product, setProduct] = useState({
-        title: '',
-        img: '',
-        model:'',
-        description: '',
-        price: 0,
-        type: '',
-        year: 0
-    });
+  const { addProduct } = useProducts();
+  const navigate = useNavigate();
+  const [product, setProduct] = useState({
+    title: '',
+    img: '',
+    model:'',
+    description: '',
+    price: 0,
+    type: '',
+    year: 0
+  });
 
-    const handleInp = (e) => {
-        if (e.target.name === 'price' && e.target.name === 'year' ) {
-          let obj = {
-            ...product,
-            [e.target.name]: +(e.target.value),
-          };
-    
-          setProduct(obj);
-        } else {
-          let obj = {
-            ...product,
-            [e.target.name]: e.target.value,
-          };
-    
-          setProduct(obj);
-        }
-      };
+  const handleInp = (e) => {
+      if (e.target.name === 'price' && e.target.name === 'year' ) {
+        let obj = {
+          ...product,
+          [e.target.name]: +(e.target.value),
+        };
+  
+        setProduct(obj);
+      } else {
+        let obj = {
+          ...product,
+          [e.target.name]: e.target.value,
+        };
+  
+        setProduct(obj);
+      }
+  };
 
     return (
         <Box sx={{bgcolor:"#ffe0b2", height:"100vh",padding:"20vh auto"}} >

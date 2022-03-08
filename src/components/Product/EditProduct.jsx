@@ -7,21 +7,21 @@ const EditProduct = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { getProductDetails, productDetails, saveEditedProduct , edit} = useProducts();
-    console.log(edit);
     const [product, setProduct] = useState(productDetails);
-
+    console.log(productDetails);
 
     const handleInput = (e) => {
-        let obj = {
-            ...product,
-            [e.target.name]: e.target.value,
-        };
-        setProduct(obj);
+      let obj = {
+        ...product,
+        [e.target.name]: e.target.value,
+      };
+      setProduct(obj);
+      console.log(product);
     };
 
     useEffect(() => {
         getProductDetails(id);
-    }, [id ]);
+    }, [id]);
 
     useEffect(() => {
       if(edit){
@@ -121,7 +121,7 @@ const EditProduct = () => {
                 size="large"
                 fullWidth
                 onClick={() => {
-                  saveEditedProduct(product);
+                  saveEditedProduct(product, id);
                   navigate('/products');
                 }}
               >
