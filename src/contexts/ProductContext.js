@@ -96,6 +96,7 @@ const ProductContextProvider = ({ children }) => {
   }
 
   const addProductToCart = (product) => {
+    console.log(product);
     let cart = JSON.parse(localStorage.getItem('cart'))
     if(!cart){
       cart = {
@@ -144,6 +145,7 @@ const ProductContextProvider = ({ children }) => {
   }
 
   function deleteCartProducts(id){
+    console.log(id);
     let cart = JSON.parse(localStorage.getItem('cart'))
     cart.products = cart.products.filter((item)=> item.item.id !== id)
     cart.totalPrice = calcTotalPrice(cart.products);

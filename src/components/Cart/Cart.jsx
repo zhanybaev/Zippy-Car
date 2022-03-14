@@ -25,6 +25,15 @@ export default function Cart() {
     getCart()
   };
 
+  const checkout = ()=>{
+    alert('Success')
+    cartCleaner()
+  }
+
+  // cart.products.forEach(item=>{
+  //   console.log(item.item.id);
+  // })
+
 
   return (
     <div className="cart">
@@ -82,7 +91,7 @@ export default function Cart() {
           <p id='clear-cart' onClick={cartCleaner}>Clear cart</p>
         </div>
         <div className="underline"></div>
-        <button id='checkout-btn'>Checkout</button>
+        <button onClick={checkout} id='checkout-btn'>Checkout</button>
       </div>
       </div>
     </div>  

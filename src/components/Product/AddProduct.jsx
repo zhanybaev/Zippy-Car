@@ -8,13 +8,14 @@ const AddProduct = () => {
   const { addProduct } = useProducts();
   const navigate = useNavigate();
   const [product, setProduct] = useState({
+    id: Date.now(),
     title: '',
     img: '',
     model:'',
     description: '',
     price: 0,
+    year: 0,
     type: '',
-    year: 0
   });
 
   const handleInp = (e) => {

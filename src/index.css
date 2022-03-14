@@ -56,6 +56,7 @@ body {
   width: auto;
   height: 100px;
   margin-top: 10px;
+  margin-left: 25px;
 }
 
 .cartPage{
@@ -166,6 +167,7 @@ body {
 .cartPage-products{
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .cart-totalPrice__subPrice{
@@ -216,4 +218,14 @@ body {
 
 #clear-cart{
   text-align: left;
+}
+
+@media screen and (max-width: 1080px){
+  .cart-product-title{
+    font-size: 15px;
+  }
+
+  .cart-product-info{
+    font-size: 13px;
+  }
 }
