@@ -15,7 +15,7 @@ const ProductCard = ({ item }) => {
             <button onClick={()=>deleteProduct(item.id)}>Delete</button>
             <button onClick={() => navigate(`/edit/${item.id}`)} >Edit</button>
             <button onClick={() => addProductToCart(item.data())}>
-                <ShoppingCartIcon color={checkProductInCart(item.id) ? "error" : ""}/> 
+                <ShoppingCartIcon color={checkProductInCart(item.data().id) ? "error" : ""}/> 
             </button>
         </div>
     );

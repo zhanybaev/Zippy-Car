@@ -158,16 +158,11 @@ const ProductContextProvider = ({ children }) => {
     })
   }
     
-  function checkProductInCart(id){
+  function checkProductInCart(productId){
     let cart = JSON.parse(localStorage.getItem('cart'))
     
     if(cart){
-      let newCart = cart.products.filter((element)=>element.item.id===id)
-      cart.products.forEach(item=>{
-        if(item.item.id!==id){
-          console.log(item.item.id, id);
-        }
-      })
+      let newCart = cart.products.filter((element)=>element.item.id===productId)
       return newCart.length > 0  
     }else{
       cart={
