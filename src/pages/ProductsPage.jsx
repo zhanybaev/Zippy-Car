@@ -3,7 +3,7 @@ import ProductList from '../components/Product/ProductList';
 
 const ProductsPage = () => {
     return (
-        <div>
+        <div className='productsPage'>
             <h1 style={{textAlign: 'center'}}>Products</h1>
             <ProductList/>
         </div>

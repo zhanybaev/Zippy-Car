@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import fire from '../fire';
+import fire from '../fire'
 
 export const authContext = createContext();
 
@@ -20,6 +20,7 @@ const AuthContextProvider = ({ children }) => {
     setPassword('');
   };
 
+  
   const clearErrors = () => {
     setEmailError('');
     setPasswordError('');
@@ -80,7 +81,6 @@ const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     authListener();
   }, []);
-
   const values = {
     email,
     user,

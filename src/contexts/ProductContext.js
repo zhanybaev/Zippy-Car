@@ -96,7 +96,6 @@ const ProductContextProvider = ({ children }) => {
   }
 
   const addProductToCart = (product) => {
-    console.log(product);
     let cart = JSON.parse(localStorage.getItem('cart'))
     if(!cart){
       cart = {
