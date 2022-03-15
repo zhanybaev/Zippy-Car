@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer } from 'react';
 import { ACTIONS  } from '../helpers/consts';
 import { calcSubPrice, calcTotalPrice, getCountProductsInCart } from '../helpers/functions'
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, startAt, endAt, getDoc } from 'firebase/firestore'
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, startAt, endAt, getDoc, onSnapshot } from 'firebase/firestore'
 import { db } from '../fire'
 
 export const productContext = createContext();
@@ -27,10 +27,10 @@ const reducer = (state = INIT_STATE, action) => {
           return {...state, cart: action.payload}
         case ACTIONS.CHANGE_CART_LENGTH:
           return {...state, cartLength: action.payload}
-          case ACTIONS.EDIT_CAR:
+        case ACTIONS.EDIT_CAR:
           return {...state, edit: action.payload}
         default:
-            return state
+          return state
     }
 };
 
@@ -40,22 +40,36 @@ const ProductContextProvider = ({ children }) => {
     
   const getProducts = async(search='') => {
     const q = query(usersCollectionRef, orderBy('title'), startAt(search), endAt(search + '\uf8ff'))
-    const data = await getDocs(q)
-    dispatch({
-      type: ACTIONS.GET_PRODUCTS,
-      payload: data.docs.map((doc)=> (doc))
-    })
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const arr = [];
+      querySnapshot.forEach((doc) => {
+        arr.push({ docId: doc.id, ...doc.data() });
+      });
+      dispatch({
+        type: ACTIONS.GET_PRODUCTS,
+        payload: arr,
+      });
+      console.log(INIT_STATE.products);
+    });
+    return () => {
+      unsubscribe();
+    };
+    // const data = await getDocs(q)
+    // dispatch({
+    //   type: ACTIONS.GET_PRODUCTS,
+    //   payload: data.docs.map((doc)=> (doc))
+    // })
   }
 
   const addProduct = async (newProduct) => {
     await addDoc(usersCollectionRef, newProduct);
-    getProducts();
+    // getProducts();
   };
 
   const deleteProduct = async (id)=>{
     const userDoc = doc(db, "cars", id)
     await deleteDoc(userDoc)
-    getProducts()
+    // getProducts()
   }
 
   const getProductDetails = async (id) => {
@@ -70,7 +84,7 @@ const ProductContextProvider = ({ children }) => {
   const saveEditedProduct = async (productToEdit, id) => {
     const userDoc = doc(db, "cars", id)
     await updateDoc(userDoc, productToEdit)
-    getProducts()
+    // getProducts()
   }
 
   const getCart = () => {
@@ -161,7 +175,7 @@ const ProductContextProvider = ({ children }) => {
     let cart = JSON.parse(localStorage.getItem('cart'))
     
     if(cart){
-      let newCart = cart.products.filter((element)=>element.item.id===productId)
+      let newCart = cart.products.filter((element)=>element.item.docId===productId)
       return newCart.length > 0  
     }else{
       cart={

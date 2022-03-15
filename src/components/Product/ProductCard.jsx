@@ -5,17 +5,17 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 
 const ProductCard = ({ item }) => {
-    const { deleteProduct, addProductToCart, checkProductInCart, deleteCartProducts } = useProducts()
+    const { deleteProduct, addProductToCart, checkProductInCart } = useProducts()
     const navigate = useNavigate()
     return (
         <div className='card'>
-            <img src={item.data().img} alt="" />            
-            <h4>{item.data().title} {item.model}</h4>
-            <p>{item.data().price / 1000}K $</p>
-            <button onClick={()=>deleteProduct(item.id)}>Delete</button>
-            <button onClick={() => navigate(`/edit/${item.id}`)} >Edit</button>
-            <button onClick={() => addProductToCart(item.data())}>
-                <ShoppingCartIcon color={checkProductInCart(item.data().id) ? "error" : ""}/> 
+            <img src={item.img} alt="" />            
+            <h4>{item.title} {item.model}</h4>
+            <p>{item.price / 1000}K $</p>
+            <button onClick={()=>deleteProduct(item.docId)}>Delete</button>
+            <button onClick={() => navigate(`/edit/${item.docId}`)} >Edit</button>
+            <button onClick={() => addProductToCart(item)}>
+                <ShoppingCartIcon color={checkProductInCart(item.docId) ? "error" : ""}/> 
             </button>
         </div>
     );
