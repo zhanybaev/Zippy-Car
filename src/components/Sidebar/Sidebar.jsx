@@ -1,5 +1,4 @@
 import React from 'react';
-import { useAuth } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
@@ -10,10 +9,12 @@ import PeopleIcon from '@mui/icons-material/People';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import LogoutSharpIcon from '@mui/icons-material/LogoutSharp';
 import CallIcon from '@mui/icons-material/Call';
+import { useAuth, Logout } from '../Auth/Auth.ts'
 import './Sidebar.css'
 
 const Sidebar = () => {
-    const { handleLogout, user: { email }, } = useAuth();
+    const user = useAuth()
+    const email = user?.email 
     const ADMIN = process.env.REACT_APP_ADMIN
     return (
         <div className="s-layout__sidebar">
@@ -58,7 +59,7 @@ const Sidebar = () => {
                     { email ? 
                         (
                             <li>
-                                <Link to="/" onClick={handleLogout} className="s-sidebar__nav-link" >
+                                <Link to="/" onClick={Logout} className="s-sidebar__nav-link" >
                                     <LogoutSharpIcon className='link-icon'/><em>Log Out</em>
                                 </Link>
                             </li>

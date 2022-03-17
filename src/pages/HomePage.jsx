@@ -1,11 +1,17 @@
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext';
 
 const HomePage = () => {
-    const { user: {email} } = useAuth()
     return (
         <div className='home' >
-            <h1 style={{textAlign:'center'}}>Home</h1>
+            <header>
+                <h1 style={{textAlign:'center'}}>Hello</h1>
+            </header>
+            <section>
+                <h1 style={{textAlign:'center'}}>WTF?</h1>
+            </section>
+            <div className="main">
+                <h1 style={{textAlign:'center'}}>FUQ</h1>
+            </div>
         </div>
     );
 };
