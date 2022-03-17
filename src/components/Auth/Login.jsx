@@ -8,12 +8,12 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useAuth }  from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { signIn, signUp, useAuth } from './Auth.ts'
+import { useState } from 'react';
 
 function Copyright(props) {
   return (
@@ -37,30 +37,20 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
-  const {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    handleLogin,
-    handleSignUp,
-    hasAccount,
-    setHasAccount,
-    emailError,
-    passwordError,
-  } = useAuth();
+  const [values, setValues] = useState({email:'', password:''})
+  const [hasAccount, setHasAccount] = useState('')
   const navigate = useNavigate()
 
-  const handleSignIn = () => {
-    handleLogin()
-    navigate('/')
+
+  const handleInp = (e) => {
+    let obj = {
+      ...values,
+      [e.target.name]: e.target.value
+    }
+
+    setValues(obj)
   }
 
-
-  // const signUp = () => {
-  //   handleSignUp()
-  //   setHasAccount(!hasAccount)
-  // }
 
   return (
     <Box sx={{bgcolor:"#fff3e0",padding:5}}>
@@ -78,7 +68,6 @@ export default function Login() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: '#f57c00' }}>
-            {/* <LockOutlinedIcon /> */}
           </Avatar>
           <Typography component="h1" variant="h5">
             {hasAccount ? 'Sign in' : 'Sign up'}  
@@ -93,11 +82,7 @@ export default function Login() {
               name="email"
               autoComplete="email"
               autoFocus
-              helperText={emailError}
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
+              onChange={handleInp}
             />
 
             <TextField
@@ -109,11 +94,7 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
-              helperText={passwordError}
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
+              onChange={handleInp}
             />
 
             <FormControlLabel
@@ -123,32 +104,27 @@ export default function Login() {
 
             {hasAccount ? (
               <Button
-                type="submit"
+                type="button"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2,bgcolor:"#263238",borderColor: 'error.main',fontFamily: 'Monospace',color:"#f57c00"}}
-                onClick={handleSignIn}
+                onClick={()=> signIn(values.email, values.password)}
               >
                 Sign In
               </Button>
             ) : (
               <Button
-                type="submit"
+                type="button"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2, bgcolor:"#263238",borderColor: 'error.main',fontFamily: 'Monospace',color:"#f57c00"}}
-                onClick={handleSignUp}
+                onClick={()=>signUp(values.email, values.password)}
               >
                 Sign Up
               </Button>
             )}
 
             <Grid container sx={{marginBottom:3}}>
-              {/* <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid> */}
               <Grid item >
                 {hasAccount ? (
                   <Link
